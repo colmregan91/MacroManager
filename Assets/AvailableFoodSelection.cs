@@ -6,25 +6,31 @@ using Menus;
 using Singletons;
 using UnityEngine;
 
-public class AvailableFoodSelection : BaseMenu
+public class AvailableFoodSelection : MonoBehaviour
 {
-    // Start is called before the first frame update
-
     private const string PATH = "FoodSelectionUI";
     private FoodSelectUI selectUI;
     [SerializeField] private Transform contentParent;
     private FoodSelectUI selectUIGO;
+    
+    [SerializeField] private bool moltiSelect;
 
-    public static Action<Food> OnFoodSelected;
-
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
+       // base.Start();
  
-        MenuManager.Instance.AddMenu<AvailableFoodSelection>(this);
+   //     MenuManager.Instance.AddMenu<AvailableFoodSelection>(this);
         
         selectUI = Resources.Load<FoodSelectUI>(PATH);
         Init();
+    }
+    
+    private void HandleFoodSelected(Food food)
+    {
+        if (moltiSelect)
+        {
+            
+        }
     }
 
     private void OnEnable()
@@ -35,7 +41,7 @@ public class AvailableFoodSelection : BaseMenu
     private void OnAddFood(Food food)
     {
         selectUIGO = Instantiate(selectUI, contentParent);
-        selectUIGO.Init(food);
+        selectUIGO.Init(food, HandleFoodSelected);
     }
 
 
@@ -53,7 +59,7 @@ public class AvailableFoodSelection : BaseMenu
             Food food = JsonUtility.FromJson<Food>(json);
             selectUIGO = Instantiate(selectUI, contentParent);
 
-            selectUIGO.Init(food);
+            selectUIGO.Init(food, HandleFoodSelected);
         }
     }
 

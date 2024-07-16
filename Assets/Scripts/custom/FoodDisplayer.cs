@@ -22,11 +22,11 @@ public class FoodDisplayer : MonoBehaviour
     [SerializeField] protected TMP_Dropdown typeInput;
     [SerializeField] private GameObject[] titles;
     protected Food displayedFood;
-    
 
+    private Material imageMaterial;
     private List<TMP_Dropdown.OptionData> _options = new List<TMP_Dropdown.OptionData>();
     private List<FoodType> foodTypes = new List<FoodType>();
-    
+    public Texture2D defaultTex;
     public Food DisplayedFood => displayedFood;
     
     public Texture2D GetImageInput()
@@ -60,8 +60,15 @@ public class FoodDisplayer : MonoBehaviour
 
     public void SetImageTexture(Texture2D texture)
     {
-        image.texture = texture;
+        
+        if (image.material == null || image.material.name == image.material.shader.name + " (Instance)")
+        {
+            image.material = new Material(image.material);
+        }
+
+        // Set the new texture on the RawImage's material
         image.material.mainTexture = texture;
+        image.texture = texture;
     }
     
     
@@ -98,22 +105,17 @@ public class FoodDisplayer : MonoBehaviour
             title.gameObject.SetActive(false);
         }
     }
-
-    public void ShowMeal(Meal meal)
-    {
-        nameInput.text = meal.name;
-        servingSizeInput.gameObject.SetActive(false);
-        carbsInput.text = meal.mealTotal.carbs.ToString();
-        caloriesInput.text = meal.mealTotal.calories.ToString();
-        proteinInput.text = meal.mealTotal.protein.ToString();
-        fatInput.text = meal.mealTotal.fat.ToString();
-    }
-
+    
     public void ShowFood(Food food)
     {
         if (food.TextureData != null)
         {
-            image.texture = TextureUtils.GetTextureFromData(food.TextureData);
+            SetImageTexture(TextureUtils.GetTextureFromData(food.TextureData));
+        }
+        else
+        {   image.material.mainTexture = defaultTex;
+            image.texture = defaultTex;
+            
         }
 
         displayedFood = food;

@@ -17,12 +17,12 @@ public class CheckedFoodPanel : BaseMenu
     public override void OnInactive() => ClearSelection();
     private void OnEnable()
     {
-         AvailableFoodSelection.OnFoodSelected += ShowSelectedFood;
+        // AvailableFoodSelection.OnFoodSelected += ShowSelectedFood;
     }
 
     private void OnDisable()
     {
-           AvailableFoodSelection.OnFoodSelected -= ShowSelectedFood;
+      //     AvailableFoodSelection.OnFoodSelected -= ShowSelectedFood;
     }
 
     private void ClearSelection() // this is shit

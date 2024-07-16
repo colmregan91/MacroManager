@@ -13,12 +13,14 @@ public class FoodInfoModifier : FoodDisplayer
     public Action<FoodInfoModifier> OnFoodRemoved;
     private Food _modifiedFood;
     private UISwitcher.UISwitcher _switcher;
-
     public Food ModifiedFood => _modifiedFood ?? DisplayedFood;
 
     private void Awake()
     {
         _switcher = GetComponentInChildren<UISwitcher.UISwitcher>();
+        
+        // image.texture = defaultTexture;
+        // image.material.mainTexture = defaultTexture;
     }
 
     private void Start()
@@ -50,7 +52,12 @@ public class FoodInfoModifier : FoodDisplayer
         incrementButton.onClick.AddListener(IncrementAmount);
         decrementButton.onClick.AddListener(DecrementAmount);
         servingSizeInput.onValueChanged.AddListener(ModifyNutrition);
-        _switcher.OnValueChanged += HandleSwitcherChanged;
+
+        if (_switcher != null)
+        {
+            _switcher.OnValueChanged += HandleSwitcherChanged;  
+        }
+    
     }
 
     private void HandleSwitcherChanged(bool val)
@@ -111,6 +118,9 @@ public class FoodInfoModifier : FoodDisplayer
         servingSizeInput.onValueChanged.RemoveListener(ModifyNutrition);
         incrementButton.onClick.RemoveListener(IncrementAmount);
         decrementButton.onClick.RemoveListener(DecrementAmount);
-        _switcher.OnValueChanged -= HandleSwitcherChanged;
+        if (_switcher != null)
+        {
+            _switcher.OnValueChanged -= HandleSwitcherChanged;
+        }
     }
 }

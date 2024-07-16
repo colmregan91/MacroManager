@@ -6,6 +6,7 @@ namespace Menus
 {
     public class CheckFoodMenu : BaseMenu
     {
+        [SerializeField] private AvailableFoodSelection selectionPanel;
     
         protected override void Start()
         {
@@ -18,7 +19,7 @@ namespace Menus
 
         private void OpenFoodSelectionPanel()
         {
-            MenuManager.Instance.OpenAsSubMenu(typeof(AvailableFoodSelection));
+            selectionPanel.gameObject.SetActive(true);
         }
  
       
