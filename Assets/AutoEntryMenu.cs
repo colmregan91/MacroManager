@@ -32,16 +32,22 @@ public class AutoEntryMenu : BaseMenu
 
     private void handleBarCodeScanned(string barcode)
     {
-        WebRequestManager.Instance.MakeApiRequest(barcode, (s)=>
+        WebRequestManager.Instance.MakeApiRequest(barcode, (food)=>
         {
             displayer.ResetRotation();
-       //     displayer.ShowFood(s);
             scanner.Deinit();
             scanner.gameObject.SetActive(false);
-            
+            OpenFoodMenuWithSchema(food);
         }, (error)=> Debug.Log(error));
 
         
+    }
+
+    private void OpenFoodMenuWithSchema(Food food)
+    {
+        FoodDisplaySchema schema = new FoodDisplaySchema() { requiresSelection = false, food = food };
+        FoodDisplayMenu.SetDisplaySchema(schema);
+        MenuManager.Instance.OpenMenu<FoodDisplayMenu>();
     }
 
 

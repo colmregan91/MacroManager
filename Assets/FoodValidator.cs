@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -15,10 +16,10 @@ public class FoodValidator : MonoBehaviour
     {
         modifier = GetComponent<FoodInfoModifier>();
     }
-    
+
     private bool HasNutritionBeenEntered()
     {
-        return !(modifier.GetCalorieInput() == 0 && modifier.GetProteinInput() == 0 &&  modifier.GetFatInput() == 0 &&  modifier.GetCarbsInput() == 0);
+        return !(modifier.GetCalorieInput() == 0 && modifier.GetProteinInput() == 0 && modifier.GetFatInput() == 0 && modifier.GetCarbsInput() == 0);
     }
 
     private void HandleAddButtonClicked()
@@ -35,38 +36,43 @@ public class FoodValidator : MonoBehaviour
             return;
         }
 
-        PopUpManager.Instance.ShowQuestionMessage("Please ensure data is correct.  Accuracy of scanned products is not guarateed.", "continue", "Go Back", 
-            () => SaveNewFood(),
-            null);
+        PopUpManager.Instance.ShowQuestionMessage("Please ensure data is correct.  Accuracy of scanned products is not guarateed.", "continue", "Go Back", () => SaveNewFood(), null);
         // if tests pass popupmanager, say make sure image is clear and that data matches nutri info as sometimes server gets it wrong, option to add food or to go back 
-
     }
 
-    public void SaveNewFood()
+    private void SaveNewFood()
     {
         var tex = modifier.GetImageInput();
-            Food newFood = new Food
-            {
-                TextureData = TextureUtils.GetDataFromTexture(tex),
-                foodType = FoodType.Other,
-                name = modifier.GetNameInput(),
-                normalPortionSize = modifier.GetSizeInput(),
-                carbs = modifier.GetCarbsInput(),
-                calories = modifier.GetCalorieInput(),
-                protein = modifier.GetProteinInput(),
-                fat = modifier.GetFatInput(),
-            };
+        Food newFood = new Food
+        {
+            TextureData = TextureUtils.GetDataFromTexture(tex),
+            foodType = FoodType.Other,
+            name = modifier.GetNameInput(),
+            normalPortionSize = modifier.GetSizeInput(),
+            carbs = modifier.GetCarbsInput(),
+            calories = modifier.GetCalorieInput(),
+            protein = modifier.GetProteinInput(),
+            fat = modifier.GetFatInput(),
+        };
 
-            string json = JsonUtility.ToJson(newFood);
-            string path = PathUtils.GetFoodPath(newFood.foodType.ToString(), newFood.name);
-            File.WriteAllText(path, json);
+        string json = JsonUtility.ToJson(newFood);
+        string path = PathUtils.GetFoodPath(newFood.foodType.ToString(), newFood.name);
+        File.WriteAllText(path, json);
 
-           
-            AddFoodMenu.OnFoodAdded?.Invoke(newFood);
-            PopUpManager.Instance.ShowPopupMessage($"{newFood.name} has been successfully added.","Back", ()=>
-            {
-                modifier.ClearFields();
-                MenuManager.Instance.OpenMenu<MainMenu>();
-            });
-        }
+
+        AddFoodMenu.OnFoodAdded?.Invoke(newFood);
+        Action posCallback = () =>
+        {
+            modifier.ClearFields();
+            MenuManager.Instance.ChangeMenu(typeof(AddFoodMenu));
+        };
+
+        Action negCallback = () =>
+        {
+            modifier.ClearFields();
+            MenuManager.Instance.ChangeMenu(typeof(MainMenu));
+        };
+
+        PopUpManager.Instance.ShowQuestionMessage($"{newFood.name} has been successfully added.", "Add another", "Back", posCallback, negCallback);
     }
+}

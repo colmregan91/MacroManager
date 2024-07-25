@@ -19,23 +19,26 @@ public class QuestionPopup : BasePopup
         
     public void ShowQuestionPopup(string message,string positiveText, string negativeText, Action positiveCallback, Action negativeCallback)
     {
+        positiveButton.onClick.RemoveAllListeners();
+        negativeButton.onClick.RemoveAllListeners();
         _messageText.text = message;
         positiveButtonText.text = positiveText;
         negativeButtonText.text = negativeText;
-        
+        ShowCanvasGroup();
         positiveButton.onClick.AddListener(()=>
         {
-         
-            positiveCallback?.Invoke();
             HidePopup();
+            positiveCallback?.Invoke();
+          
         });
         
         negativeButton.onClick.AddListener(()=>
         {
-            negativeCallback?.Invoke();
             HidePopup();
+            negativeCallback?.Invoke();
+           
         });
-        ShowCanvasGroup();
+
     }
     
     protected override void HidePopup()

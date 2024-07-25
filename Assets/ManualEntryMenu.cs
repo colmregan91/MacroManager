@@ -40,7 +40,7 @@ public class ManualEntryMenu : BaseMenu
     private void OnContinue(Texture2D tex)
     {
         continueButton.onClick.RemoveAllListeners();
-        FoodDisplaySchema schema = new FoodDisplaySchema() { requiresSelection = false, displayType = FoodDisplaySchema.DisplayType.Manual, food = new Food() { normalPortionSize = 100, TextureData = TextureUtils.GetDataFromTexture(tex) } };
+        FoodDisplaySchema schema = new FoodDisplaySchema() { requiresSelection = false,food = new Food() { normalPortionSize = 100, TextureData = TextureUtils.GetDataFromTexture(tex) } };
         FoodDisplayMenu.SetDisplaySchema(schema);
         MenuManager.Instance.OpenMenu<FoodDisplayMenu>();
     }

@@ -3,14 +3,7 @@
     public bool requiresSelection;
 
     public Food food;
-    public DisplayType displayType;
-    public enum  DisplayType
-    {
-        Manual,
-        auto
-    }
     
-
     //Selecting 
     // 
     //
