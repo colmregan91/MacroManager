@@ -229,3 +229,14 @@ Packages/packages-lock.json
 ProjectSettings/InputManager.asset
 ProjectSettings/ShaderGraphSettings.asset
 UserSettings/EditorUserSettings.asset
+Library/ArtifactDB
+Library/Bee/fullprofile.json
+Library/com.unity.ide.rider/PersistedState.asset
+Library/PackageManager/ProjectCache
+Library/Search/transactions.db
+Library/SourceAssetDB
+Logs/shadercompiler-UnityShaderCompiler.exe0.log
+Packages/manifest.json
+Packages/packages-lock.json
+ProjectSettings/InputManager.asset
+UserSettings/EditorUserSettings.asset
