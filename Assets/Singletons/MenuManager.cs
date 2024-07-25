@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Menus;
 using UnityEngine;
 
+
 namespace Singletons
 {
     public class MenuManager : MonoSingleton<MenuManager>
@@ -46,13 +47,18 @@ namespace Singletons
 
             return null;
         }
+
+        public void CloseCurrentSubMenu()
+        {
+            _currentSubMenu.OnInactive();
+            _currentSubMenu.CloseMenu();
+        }
         
         public void OpenAsSubMenu(Type menuType)
         {
             if (_currentSubMenu != null)
             {
-                _currentSubMenu.OnInactive();
-                _currentSubMenu.CloseMenu();
+                CloseCurrentSubMenu();
             }
             
             _currentSubMenu = GetMenu(menuType);

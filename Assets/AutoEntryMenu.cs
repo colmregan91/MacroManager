@@ -35,7 +35,7 @@ public class AutoEntryMenu : BaseMenu
         WebRequestManager.Instance.MakeApiRequest(barcode, (s)=>
         {
             displayer.ResetRotation();
-            displayer.ShowFood(s);
+       //     displayer.ShowFood(s);
             scanner.Deinit();
             scanner.gameObject.SetActive(false);
             

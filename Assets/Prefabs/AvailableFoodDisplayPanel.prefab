@@ -130,12 +130,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 754
+    m_Left: 925
     m_Right: 0
     m_Top: 58
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 97.6
+  m_Spacing: 125.29
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -167,7 +167,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7319095557524654800}
   - component: {fileID: 7632201975784289516}
-  - component: {fileID: 8394478216479181347}
   m_Layer: 5
   m_Name: AvailableFoodDisplayPanel
   m_TagString: Untagged
@@ -182,7 +181,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3731414914257557651}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -208,18 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contentParent: {fileID: 6332141546564850289}
---- !u!225 &8394478216479181347
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3731414914257557651}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  moltiSelect: 0
 --- !u!1 &6436122849067488480
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,7 +388,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8549198181513359418}
   m_HandleRect: {fileID: 8111168829129629812}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

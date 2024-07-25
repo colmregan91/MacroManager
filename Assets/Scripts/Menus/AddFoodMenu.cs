@@ -12,9 +12,6 @@ namespace Menus
         [SerializeField] private Button ManualEnterButton;
         [SerializeField] private Button ScanBarcodeButton;
 
-        [SerializeField] private GameObject ManualEntryPanel;
-        private AutoEntryMenu d;
-
         public static Action<Food> OnFoodAdded;
         protected override void Start()
         {

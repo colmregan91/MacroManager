@@ -38,12 +38,12 @@ public class FoodDisplayer : MonoBehaviour
         return (Texture2D)image.texture;
     }
 
-    public string GetNameInput() => nameInput.text;
-    public int GetSizeInput() => int.Parse(servingSizeInput.text);
-    public float GetCalorieInput() => float.Parse(caloriesInput.text);
-    public float GetCarbsInput() => float.Parse(carbsInput.text);
-    public float GetProteinInput() => float.Parse(proteinInput.text);
-    public float GetFatInput() => float.Parse(fatInput.text);
+    public string GetNameInput() =>string.IsNullOrEmpty(nameInput.text) ? " " : nameInput.text;
+    public int GetSizeInput() => string.IsNullOrEmpty(caloriesInput.text) ? 0 : int.Parse(servingSizeInput.text);
+    public float GetCalorieInput() => string.IsNullOrEmpty(caloriesInput.text) ? 0 : float.Parse(caloriesInput.text);
+    public float GetCarbsInput() => string.IsNullOrEmpty(carbsInput.text) ? 0 : float.Parse(carbsInput.text);
+    public float GetProteinInput() =>  string.IsNullOrEmpty(proteinInput.text) ? 0 : float.Parse(proteinInput.text);
+    public float GetFatInput() =>   string.IsNullOrEmpty(fatInput.text) ? 0 : float.Parse(fatInput.text);
     public FoodType GetFoodType() => foodTypes[0];
     
     
@@ -106,11 +106,11 @@ public class FoodDisplayer : MonoBehaviour
         }
     }
     
-    public void ShowFood(Food food)
+    public void ShowFood(FoodDisplaySchema schema)
     {
-        if (food.TextureData != null)
+        if (schema.food.TextureData != null)
         {
-            SetImageTexture(TextureUtils.GetTextureFromData(food.TextureData));
+            SetImageTexture(TextureUtils.GetTextureFromData(schema.food.TextureData));
         }
         else
         {   image.material.mainTexture = defaultTex;
@@ -118,13 +118,13 @@ public class FoodDisplayer : MonoBehaviour
             
         }
 
-        displayedFood = food;
-        nameInput.text = food.name;
-        servingSizeInput.text = food.normalPortionSize.ToString();
-        carbsInput.text = food.carbs.ToString();
-        caloriesInput.text = food.calories.ToString();
-        proteinInput.text = food.protein.ToString();
-        fatInput.text = food.fat.ToString();
-        typeInput.value = foodTypes.IndexOf(food.foodType);
+        displayedFood = schema.food;
+        nameInput.text = schema.food.name;
+        servingSizeInput.text = schema.food.normalPortionSize.ToString();
+        carbsInput.text = schema.food.carbs.ToString();
+        caloriesInput.text = schema.food.calories.ToString();
+        proteinInput.text = schema.food.protein.ToString();
+        fatInput.text = schema.food.fat.ToString();
+        typeInput.value = foodTypes.IndexOf(schema.food.foodType);
     }
 }

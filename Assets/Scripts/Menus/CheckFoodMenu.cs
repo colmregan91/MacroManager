@@ -6,22 +6,20 @@ namespace Menus
 {
     public class CheckFoodMenu : BaseMenu
     {
-        [SerializeField] private AvailableFoodSelection selectionPanel;
-    
+        [SerializeField] private FoodInfoModifier checkedFoodPanel;
         protected override void Start()
         {
             base.Start();
             MenuManager.Instance.AddMenu<CheckFoodMenu>(this);
         }
         
-        public override void OnActive() => OpenFoodSelectionPanel();
-
-
-        private void OpenFoodSelectionPanel()
+        public override void OnActive()
         {
-            selectionPanel.gameObject.SetActive(true);
+            MenuManager.Instance.OpenAsSubMenu(typeof(AvailableFoodSelection));
+            checkedFoodPanel.gameObject.SetActive(false);
+  
         }
- 
+        
       
 
     

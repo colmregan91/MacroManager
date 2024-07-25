@@ -14,7 +14,7 @@ public class CheckedFoodPanel : BaseMenu
     }
     
     public override void OnActive() =>  _foodDisplayer.gameObject.SetActive(true);
-    public override void OnInactive() => ClearSelection();
+  //  public override void OnInactive() => ClearSelection();
     private void OnEnable()
     {
         // AvailableFoodSelection.OnFoodSelected += ShowSelectedFood;
@@ -25,15 +25,15 @@ public class CheckedFoodPanel : BaseMenu
       //     AvailableFoodSelection.OnFoodSelected -= ShowSelectedFood;
     }
 
-    private void ClearSelection() // this is shit
-    {
-        _foodDisplayer.ClearFields();
-        _foodDisplayer.gameObject.SetActive(false);
-    }
-    private void ShowSelectedFood(Food food) // this is shit
-    {
-        MenuManager.Instance.OpenAsSubMenu(typeof(CheckedFoodPanel));
-         _foodDisplayer.ShowFood(food);
-    }
+    // private void ClearSelection() // this is shit
+    // {
+    //     _foodDisplayer.ClearFields();
+    //     _foodDisplayer.gameObject.SetActive(false);
+    // }
+    // private void ShowSelectedFood(Food food) // this is shit
+    // {
+    //     MenuManager.Instance.OpenAsSubMenu(typeof(CheckedFoodPanel));
+    //      _foodDisplayer.ShowFood(food);
+    // }
 
 }

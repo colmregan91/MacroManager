@@ -1,4 +1,3 @@
-
 using System;
 using Menus;
 using UnityEngine;
@@ -7,41 +6,72 @@ using Singletons;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utils;
 
 public class ManualEntryMenu : BaseMenu
 {
     [SerializeField] private BarcodeCam _scanner;
-    [SerializeField] private FoodInfoModifier _foodDisplayer;
     [SerializeField] private Button captureButton;
-
+    [SerializeField] private Button continueButton;
+    [SerializeField] private Button TakeAgainButton;
     private bool _settingUpScanner;
+
     protected override void Start()
     {
         base.Start();
         MenuManager.Instance.AddMenu<ManualEntryMenu>(this);
-        
     }
 
-    private void OnEnable()
+    public override void OnActive()
     {
+        continueButton.gameObject.SetActive(false);
+        TakeAgainButton.gameObject.SetActive(false);
         _scanner.OnTextureCaptured += HandleTextureCaptured;
+        InitPictureCapture();
+    }
+
+    public override void OnInactive()
+    {
+        continueButton.gameObject.SetActive(false);
+        TakeAgainButton.gameObject.SetActive(false);
+        _scanner.OnTextureCaptured -= HandleTextureCaptured;
+    }
+
+    private void OnContinue(Texture2D tex)
+    {
+        continueButton.onClick.RemoveAllListeners();
+        FoodDisplaySchema schema = new FoodDisplaySchema() { requiresSelection = false, displayType = FoodDisplaySchema.DisplayType.Manual, food = new Food() { normalPortionSize = 100, TextureData = TextureUtils.GetDataFromTexture(tex) } };
+        FoodDisplayMenu.SetDisplaySchema(schema);
+        MenuManager.Instance.OpenMenu<FoodDisplayMenu>();
+    }
+
+    private void OnTakeAgain()
+    {
+        continueButton.gameObject.SetActive(false);
+        TakeAgainButton.gameObject.SetActive(false);
+        TakeAgainButton.onClick.RemoveListener(OnTakeAgain);
+        InitPictureCapture();
     }
 
     private void HandleTextureCaptured(Texture2D tex)
     {
-        DeInitPictureCapture();
-        _foodDisplayer.SetImageTexture(tex);
-        _settingUpScanner = false;
+        DeInitPictureCapture(tex);
     }
 
-    private void DeInitPictureCapture()
+    private void DeInitPictureCapture(Texture2D tex)
     {
+        _settingUpScanner = false;
         captureButton.gameObject.SetActive(false);
         captureButton.onClick.RemoveListener(_scanner.CaptureImage);
         _scanner.Deinit();
-        _foodDisplayer.ResetRotation();
         _scanner.gameObject.SetActive(false);
+
+        continueButton.gameObject.SetActive(true);
+        TakeAgainButton.gameObject.SetActive(true);
+        continueButton.onClick.AddListener(() => OnContinue(tex));
+        TakeAgainButton.onClick.AddListener(OnTakeAgain);
     }
+
     public void InitPictureCapture()
     {
         // pop up are you sure
@@ -50,31 +80,17 @@ public class ManualEntryMenu : BaseMenu
         {
             return;
         }
+
         _settingUpScanner = true;
         captureButton.gameObject.SetActive(true);
         captureButton.onClick.AddListener(_scanner.CaptureImage);
         _scanner.gameObject.SetActive(true);
         _scanner.Init();
-        _foodDisplayer.RotateImageforScanning();
-    }
-    
-    public override void OnActive()
-    {
-        _foodDisplayer.ShowFood(new Food() { normalPortionSize = 100 });
-    }
-
-    public override void OnInactive()
-    {
-        _settingUpScanner = false;
-        DeInitPictureCapture();
-        _foodDisplayer.ClearFields();
     }
 
 
-    
     private void OnDisable()
     {
         captureButton.onClick.RemoveListener(_scanner.CaptureImage);
-        _scanner.OnTextureCaptured -= HandleTextureCaptured;
     }
 }

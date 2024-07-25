@@ -23,9 +23,10 @@ namespace Singletons
             _questionPopUp.ShowQuestionPopup(message,positiveText ,negativeText,positiveCallback,negativeCallback);
         }
         
-        public void ShowPopupMessage(string message)
+        public void ShowPopupMessage(string message,string buttonText = "OK", Action callback = null)
         {
-            _messagePopUp.ShowPopupMessage(message);
+            _messagePopUp.ShowPopupMessage(message,buttonText,callback);
+
         }
     }
 }

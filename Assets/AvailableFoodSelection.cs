@@ -5,32 +5,68 @@ using System.IO;
 using Menus;
 using Singletons;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class AvailableFoodSelection : MonoBehaviour
+public class AvailableFoodSelection : BaseMenu
 {
     private const string PATH = "FoodSelectionUI";
     private FoodSelectUI selectUI;
     [SerializeField] private Transform contentParent;
     private FoodSelectUI selectUIGO;
     
-    [SerializeField] private bool moltiSelect;
+    [SerializeField] private Button continueButton;
+    
+    private List<Food> _selectedFoods = new  List<Food>();
 
-    protected void Start()
+    public Action<List<Food>> OnContinue;
+
+
+
+
+
+
+
+
+    private void Init()
     {
-       // base.Start();
+        var AllFoods = FoodFetcher.Instance.AllFoods;
+        foreach (Food food in AllFoods)
+        {
+            selectUIGO = Instantiate(selectUI, contentParent);
+            selectUIGO.Init(food, HandleFoodSelected);
+        }
+    }
+
+    protected override void Start()
+    {
+       base.Start();
  
-   //     MenuManager.Instance.AddMenu<AvailableFoodSelection>(this);
+       MenuManager.Instance.AddMenu<AvailableFoodSelection>(this);
         
         selectUI = Resources.Load<FoodSelectUI>(PATH);
         Init();
     }
     
-    private void HandleFoodSelected(Food food)
+    private void HandleFoodSelected(FoodSelectUI foodUI)
     {
-        if (moltiSelect)
+        if (_selectedFoods.Contains(foodUI.FoodAtThisSelection))
         {
-            
+            foodUI.OnDeselect();
+            _selectedFoods.Remove(foodUI.FoodAtThisSelection);
         }
+        else
+        {
+            foodUI.OnSelect();
+            _selectedFoods.Add(foodUI.FoodAtThisSelection);
+        }
+
+        continueButton.interactable = _selectedFoods.Count > 0;
+    }
+
+    private void HandleContinueClicked()
+    {
+        MenuManager.Instance.CloseCurrentSubMenu();
+        OnContinue?.Invoke(_selectedFoods);
     }
 
     private void OnEnable()
@@ -42,25 +78,6 @@ public class AvailableFoodSelection : MonoBehaviour
     {
         selectUIGO = Instantiate(selectUI, contentParent);
         selectUIGO.Init(food, HandleFoodSelected);
-    }
-
-
-    public void Init()
-    {
-        var filePaths = PathUtils.GetAllFoods();
-        if (filePaths == null)
-        {
-            return;
-        }
-
-        foreach (string filePath in filePaths)
-        {
-            string json = File.ReadAllText(filePath);
-            Food food = JsonUtility.FromJson<Food>(json);
-            selectUIGO = Instantiate(selectUI, contentParent);
-
-            selectUIGO.Init(food, HandleFoodSelected);
-        }
     }
 
     private void OnDisable()

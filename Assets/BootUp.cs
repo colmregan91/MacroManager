@@ -12,5 +12,7 @@ public class BootUp : MonoBehaviour
         WebRequestManager.CreateInstance();
         MenuManager.CreateInstance();
         PopUpManager.CreateInstance();
+        FoodFetcher.CreateInstance();
+        FoodFetcher.Instance.Init();
     }
 }

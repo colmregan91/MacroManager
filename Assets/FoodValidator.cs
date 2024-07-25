@@ -61,8 +61,12 @@ public class FoodValidator : MonoBehaviour
             string path = PathUtils.GetFoodPath(newFood.foodType.ToString(), newFood.name);
             File.WriteAllText(path, json);
 
-            modifier.ClearFields();
+           
             AddFoodMenu.OnFoodAdded?.Invoke(newFood);
-            PopUpManager.Instance.ShowPopupMessage($"{name} has been successfully added.");
+            PopUpManager.Instance.ShowPopupMessage($"{newFood.name} has been successfully added.","Back", ()=>
+            {
+                modifier.ClearFields();
+                MenuManager.Instance.OpenMenu<MainMenu>();
+            });
         }
     }
