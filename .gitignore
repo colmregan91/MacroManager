@@ -240,3 +240,5 @@ Packages/manifest.json
 Packages/packages-lock.json
 ProjectSettings/InputManager.asset
 UserSettings/EditorUserSettings.asset
+/Library
+/Library/Bee
