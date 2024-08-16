@@ -37,8 +37,24 @@ namespace Singletons
                 menu.CloseMenu();
             }
         }
-    
-        public BaseMenu GetMenu(Type menuType)
+        
+       public static void OpenFoodSelectionMenu() 
+        {
+            // extra stuff required here
+            Instance.OpenAsSubMenu(typeof(AvailableFoodSelection));
+        }
+
+       public static void OpenFoodDisplayMenu()
+       {
+           Instance.OpenAsSubMenu(typeof(AvailableFoodDisplay));
+       }
+       
+       public static void OpenMealDisplayMenu()
+       {
+           Instance.OpenAsSubMenu(typeof(AvailableMealDisplay));
+       }
+  
+       public BaseMenu GetMenu(Type menuType)
         {
             if(MDictOfMenus.TryGetValue(menuType, out var menu))
             {
@@ -72,7 +88,10 @@ namespace Singletons
                 _currentMenu.OnInactive();
                 _currentMenu.CloseMenu();
             }
-
+            if (_currentSubMenu != null)
+            {
+                CloseCurrentSubMenu();
+            }
    
             _currentMenu = GetMenu(menuType);
             _currentMenu.OpenMenu();

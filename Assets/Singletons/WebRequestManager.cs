@@ -31,7 +31,6 @@ namespace Singletons
 
         public void MakeApiRequest(string serialNumber, System.Action<Food> onSuccess, System.Action<string> onError)
         {
-            Debug.Log("req");
             if (requestCount < MaxRequestsPerMinute)
             {
                 StartCoroutine(SendRequest(serialNumber, onSuccess, onError));

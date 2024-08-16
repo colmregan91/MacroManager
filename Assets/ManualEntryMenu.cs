@@ -35,14 +35,19 @@ public class ManualEntryMenu : BaseMenu
         continueButton.gameObject.SetActive(false);
         TakeAgainButton.gameObject.SetActive(false);
         _scanner.OnTextureCaptured -= HandleTextureCaptured;
+        _scanner.Deinit();
+        _settingUpScanner = false;
+        _scanner.gameObject.SetActive(false);
     }
 
     private void OnContinue(Texture2D tex)
     {
         continueButton.onClick.RemoveAllListeners();
-        FoodDisplaySchema schema = new FoodDisplaySchema() { requiresSelection = false,food = new Food() { normalPortionSize = 100, TextureData = TextureUtils.GetDataFromTexture(tex) } };
+        Food food = new Food() { normalPortionSize = 100, TextureData = TextureUtils.GetDataFromTexture(tex)};
+        FoodDisplaySchema schema = new FoodDisplaySchema() { requiresSelection = false, displayType = FoodDisplaySchema.DisplayType.AddingFood};
+        schema.foods.Add(food);
         FoodDisplayMenu.SetDisplaySchema(schema);
-        MenuManager.Instance.OpenMenu<FoodDisplayMenu>();
+        MenuManager.Instance.ChangeMenu(typeof(FoodDisplayMenu));
     }
 
     private void OnTakeAgain()

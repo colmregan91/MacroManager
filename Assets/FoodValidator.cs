@@ -22,7 +22,7 @@ public class FoodValidator : MonoBehaviour
         return !(modifier.GetCalorieInput() == 0 && modifier.GetProteinInput() == 0 && modifier.GetFatInput() == 0 && modifier.GetCarbsInput() == 0);
     }
 
-    private void HandleAddButtonClicked()
+    public void HandleAddButtonClicked()
     {
         if (modifier.GetImageInput() == null || modifier.GetNameInput().Length < 3)
         {

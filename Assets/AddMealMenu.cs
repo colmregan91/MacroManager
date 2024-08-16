@@ -11,32 +11,29 @@ using UnityEngine.UI;
 
 public class AddMealMenu : BaseMenu
 {
-
-    [SerializeField]private GameObject mealDisplayPanel;
-    private const string PATH = "FoodField";
-    private GameObject _fieldObj;
- 
-    private MealTotal _mealTotal;
-
-
-    [SerializeField] private Button _addMealButton;
-
-    public override void OnActive()
-    {
-        MenuManager.Instance.OpenAsSubMenu(typeof(AvailableFoodSelection));
-        mealDisplayPanel.SetActive(false);
-  
-    }
+    private FoodDisplaySchema schema;
+    
     protected override void Start()
     {
-        
-        _fieldObj = Resources.Load<GameObject>(PATH);
-        _mealTotal = GetComponentInChildren<MealTotal>();
         base.Start();
         MenuManager.Instance.AddMenu<AddMealMenu>(this);
+            
+        schema = new FoodDisplaySchema() { requiresSelection = true, displayType = FoodDisplaySchema.DisplayType.AddingMeal };
     }
-    
+        
+    private void OpenFoodMenuWithSchema()
+    {
+        
+        FoodDisplayMenu.SetDisplaySchema(schema);
+        MenuManager.Instance.OpenMenu<FoodDisplayMenu>();
+    }
 
+        
+    public override void OnActive()
+    {
+        OpenFoodMenuWithSchema();
+
+    }
     // public void HandleAddMealClicked()
     // {
     //     _meal.mealTotal = _mealTotal.getTotalValues();

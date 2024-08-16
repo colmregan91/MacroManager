@@ -11,6 +11,11 @@ public class FoodDisplayMenu : BaseMenu
     {
         displaySchema = desiredDisplay;
     }
+
+    public static void SetDisplayFoods(List<Food> list)
+    {
+        displaySchema.foods = list;
+    }
     protected override void Start()
     {
         base.Start();

@@ -46,7 +46,7 @@ namespace Menus
 
         private void OpenMainMenu()
         {
-            MenuManager.Instance.OpenMenu<MainMenu>();
+            MenuManager.Instance.ChangeMenu(typeof(MainMenu));
         }
 
         private void OnDisable()

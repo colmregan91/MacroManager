@@ -10,7 +10,7 @@ public class FoodFetcher : MonoSingleton<FoodFetcher>
 {
     public List<Food> AllFoods = new List<Food>();
     private CancellationTokenSource cancellationTokenSource;
-
+    public Action<Food> OnFoodSerialized;
     public void Init()
     {
         GetAllFoods();
@@ -38,8 +38,9 @@ public class FoodFetcher : MonoSingleton<FoodFetcher>
             {
                 string json = File.ReadAllText(filePath);
                 Food food = await DeserializeJsonAsync<Food>(json, cancellationTokenSource.Token);
-                Debug.Log("added " + food.name);
+                
                 AllFoods.Add(food);
+                OnFoodSerialized?.Invoke(food);
             }
             catch (OperationCanceledException)
             {
@@ -47,7 +48,6 @@ public class FoodFetcher : MonoSingleton<FoodFetcher>
             }
     
         }
-        cancellationTokenSource.Dispose();
     }
 
     private Task<T> DeserializeJsonAsync<T>(string json, CancellationToken cancellationToken)

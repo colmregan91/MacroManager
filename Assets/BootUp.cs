@@ -13,6 +13,6 @@ public class BootUp : MonoBehaviour
         MenuManager.CreateInstance();
         PopUpManager.CreateInstance();
          FoodFetcher.CreateInstance();
-         FoodFetcher.Instance.Init();
+       FoodFetcher.Instance.Init();
     }
 }

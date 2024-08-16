@@ -19,13 +19,11 @@ public class FoodDisplayer : MonoBehaviour
     [SerializeField] protected TMP_InputField carbsInput;
     [SerializeField] protected TMP_InputField proteinInput;
     [SerializeField] protected TMP_InputField fatInput;
-    [SerializeField] protected TMP_Dropdown typeInput;
-    [SerializeField] private GameObject[] titles;
+ //   [SerializeField] protected TMP_Dropdown typeInput;
     protected Food displayedFood;
 
     private Material imageMaterial;
     private List<TMP_Dropdown.OptionData> _options = new List<TMP_Dropdown.OptionData>();
-    private List<FoodType> foodTypes = new List<FoodType>();
     public Texture2D defaultTex;
     public Food DisplayedFood => displayedFood;
     
@@ -44,7 +42,7 @@ public class FoodDisplayer : MonoBehaviour
     public float GetCarbsInput() => string.IsNullOrEmpty(carbsInput.text) ? 0 : float.Parse(carbsInput.text);
     public float GetProteinInput() =>  string.IsNullOrEmpty(proteinInput.text) ? 0 : float.Parse(proteinInput.text);
     public float GetFatInput() =>   string.IsNullOrEmpty(fatInput.text) ? 0 : float.Parse(fatInput.text);
-    public FoodType GetFoodType() => foodTypes[0];
+//    public FoodType GetFoodType() => foodTypes[0];
     
     
 
@@ -97,20 +95,13 @@ public class FoodDisplayer : MonoBehaviour
         fatInput.text = 0.ToString();
         displayedFood = null;
     }
-
-    public void HideTitles()
-    {
-        foreach (var title in titles)
-        {
-            title.gameObject.SetActive(false);
-        }
-    }
     
-    public void ShowFood(FoodDisplaySchema schema)
+    
+    public void ShowFood(Food food)
     {
-        if (schema.food.TextureData != null)
+        if (food.TextureData != null)
         {
-            SetImageTexture(TextureUtils.GetTextureFromData(schema.food.TextureData));
+            SetImageTexture(TextureUtils.GetTextureFromData(food.TextureData));
         }
         else
         {   image.material.mainTexture = defaultTex;
@@ -118,13 +109,13 @@ public class FoodDisplayer : MonoBehaviour
             
         }
 
-        displayedFood = schema.food;
-        nameInput.text = schema.food.name;
-        servingSizeInput.text = schema.food.normalPortionSize.ToString();
-        carbsInput.text = schema.food.carbs.ToString();
-        caloriesInput.text = schema.food.calories.ToString();
-        proteinInput.text = schema.food.protein.ToString();
-        fatInput.text = schema.food.fat.ToString();
-        typeInput.value = foodTypes.IndexOf(schema.food.foodType);
+        displayedFood = food;
+        nameInput.text = food.name;
+        servingSizeInput.text = food.normalPortionSize.ToString();
+        carbsInput.text = food.carbs.ToString();
+        caloriesInput.text = food.calories.ToString();
+        proteinInput.text = food.protein.ToString();
+        fatInput.text = food.fat.ToString();
+  //      typeInput.value = foodTypes.IndexOf(schema.food.foodType);
     }
 }

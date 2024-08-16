@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class FieldInteractabilityManager : MonoBehaviour
 {
+    
     [SerializeField] private Selectable[] nutrition;
     [SerializeField] private Selectable[] Weight;
 
@@ -14,6 +15,8 @@ public class FieldInteractabilityManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI switcherText;
 
     [SerializeField] private Color UniteractableColor;
+
+    public UISwitcher.UISwitcher Switcher => _switcher;
     private void Awake()
     {
         _switcher = GetComponentInChildren<UISwitcher.UISwitcher>();
@@ -21,10 +24,30 @@ public class FieldInteractabilityManager : MonoBehaviour
         HandleSwitcherChanged(true);
     }
 
-    private void OnEnable()
+    public void DeInit()
     {
-        _switcher.OnValueChanged += HandleSwitcherChanged;
+        _switcher.interactable = false;
+        _switcher.OnValueChanged -= HandleSwitcherChanged;
+        _switcher.gameObject.SetActive(false);
     }
+    public void Init()
+    {
+        _switcher.interactable = true;
+        _switcher.OnValueChanged += HandleSwitcherChanged;
+        _switcher.gameObject.SetActive(true);
+    }
+
+    // public void AddCallback(Action<bool> callback)
+    // {
+    //     _switcher.OnValueChanged += callback;
+    //    
+    // }
+    //
+    // public void RemoveCallback(Action<bool> callback)
+    // {
+    //     _switcher.OnValueChanged -= callback;
+    //     _switcher.OnValueChanged -= HandleSwitcherChanged;
+    // }
 
     private void HandleSwitcherChanged(bool val)
     {
@@ -94,10 +117,5 @@ public class FieldInteractabilityManager : MonoBehaviour
             obj.interactable = false;
         }
         switcherText.text = "GRAMS";
-    }
-
-    private void OnDisable()
-    {
-        _switcher.OnValueChanged -= HandleSwitcherChanged;
     }
 }

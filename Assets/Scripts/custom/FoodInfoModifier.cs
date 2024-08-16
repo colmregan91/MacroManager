@@ -8,25 +8,62 @@ public class FoodInfoModifier : FoodDisplayer
 
     [SerializeField] private Button incrementButton;
     [SerializeField] private Button decrementButton;
-
+    
+    private FieldInteractabilityManager interactabilityManager;
+    private FoodValidator foodValidator;
     public Action OnFoodModified;
     public Action<FoodInfoModifier> OnFoodRemoved;
     private Food _modifiedFood;
-    private UISwitcher.UISwitcher _switcher;
+
     public Food ModifiedFood => _modifiedFood ?? DisplayedFood;
 
     private void Awake()
     {
-        _switcher = GetComponentInChildren<UISwitcher.UISwitcher>();
-        
-        // image.texture = defaultTexture;
-        // image.material.mainTexture = defaultTexture;
+        interactabilityManager = GetComponent<FieldInteractabilityManager>();
+        foodValidator= GetComponent<FoodValidator>();
     }
 
-    private void Start()
+    public void Init()
     {
-        HandleSwitcherChanged(true);
+        incrementButton.onClick.AddListener(IncrementAmount);
+        decrementButton.onClick.AddListener(DecrementAmount);
+        servingSizeInput.onValueChanged.AddListener(ModifyNutrition);
+        
+        switch (FoodDisplayMenu.displaySchema.displayType)
+        {
+            case FoodDisplaySchema.DisplayType.AddingFood:
+                interactabilityManager.Init();
+                interactabilityManager.Switcher.OnValueChanged += HandleSwitcherChanged;
+                break;
+            case FoodDisplaySchema.DisplayType.CheckingFood:
+                interactabilityManager.SetWeightInteractability();
+                interactabilityManager.Switcher.OnValueChanged -= HandleSwitcherChanged;
+                interactabilityManager.DeInit();
+                break;
+            
+        }
     }
+
+    public void ToggleUISwitcher(bool val)
+    {
+        interactabilityManager.Switcher.gameObject.SetActive(val);
+    }
+    public void DeInit()
+    {
+        incrementButton.onClick.RemoveListener(IncrementAmount);
+        decrementButton.onClick.RemoveListener(DecrementAmount);
+        servingSizeInput.onValueChanged.RemoveListener(ModifyNutrition);
+        interactabilityManager.Switcher.OnValueChanged -= HandleSwitcherChanged;
+    
+        gameObject.SetActive(false);
+    }
+
+    private void AddButtonMethodsWhenYouAREADDINGTHEMBACKIN()
+    {
+        //addButton.onClick.AddListener(foodValidator.HandleAddButtonClicked);
+       // addButton.onClick.RemoveListener(foodValidator.HandleAddButtonClicked);
+    }
+    
 
     public void RemoveFood()
     {
@@ -46,20 +83,7 @@ public class FoodInfoModifier : FoodDisplayer
         g -= 5;
         servingSizeInput.text = g.ToString();
     }
-
-    private void OnEnable()
-    {
-        incrementButton.onClick.AddListener(IncrementAmount);
-        decrementButton.onClick.AddListener(DecrementAmount);
-        servingSizeInput.onValueChanged.AddListener(ModifyNutrition);
-
-        if (_switcher != null)
-        {
-            _switcher.OnValueChanged += HandleSwitcherChanged;  
-        }
     
-    }
-
     private void HandleSwitcherChanged(bool val)
     {
         if (val) // modifying nutrition
@@ -79,8 +103,7 @@ public class FoodInfoModifier : FoodDisplayer
         {
             return;
         }
-
-
+        
         float yGrams;
         if (float.TryParse(targetAmount, out yGrams))
         {
@@ -118,9 +141,6 @@ public class FoodInfoModifier : FoodDisplayer
         servingSizeInput.onValueChanged.RemoveListener(ModifyNutrition);
         incrementButton.onClick.RemoveListener(IncrementAmount);
         decrementButton.onClick.RemoveListener(DecrementAmount);
-        if (_switcher != null)
-        {
-            _switcher.OnValueChanged -= HandleSwitcherChanged;
-        }
+        interactabilityManager.Switcher.OnValueChanged -= HandleSwitcherChanged;
     }
 }
